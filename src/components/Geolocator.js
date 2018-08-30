@@ -49,6 +49,7 @@ class DataVisualizer extends Component {
 				this.props.geolocatePerson(user);
 			// }
 			this.setState({
+				id: event.target.value,
 				user: this.findUser(event.target.value)
 			});
 		}
@@ -64,6 +65,10 @@ class DataVisualizer extends Component {
 
 	render() {
 		const {classes} = this.props;
+		const {
+			id,
+		} = this.state;
+		const user = this.findUser(id);
 		return (
 			<div className={classes.wrapper}>
 				<Paper className={classes.root}>
@@ -82,20 +87,20 @@ class DataVisualizer extends Component {
 					/>
 				</Paper>
 				<br/>
-				{this.state.user &&
+				{user &&
 					<Paper className={classes.root}>
 						<h3>Results</h3>
 						<div>
-							Name: {this.state.user.get('First_name')} {this.state.user.get('Last_name')}
+							Name: {user.get('First_name')} {user.get('Last_name')}
 						</div>
 						<div>
-							Country: {this.state.user.get('Country')}
+							Country: {user.get('Country')}
 						</div>
 						<br/>
 						<div>
-							Real Location: {this.state.user.getIn(['metadata', 'city'])}
+							Real Location: {user.getIn(['metadata', 'city'])}
 							<img className={classes.countryFlag}
-								src={this.state.user.getIn(['metadata', 'location', 'country_flag'])} alt=""/>
+								src={user.getIn(['metadata', 'location', 'country_flag'])} alt=""/>
 						</div>
 					</Paper>
 				}

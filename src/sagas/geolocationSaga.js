@@ -9,12 +9,19 @@ import {
 	fetchLocationSucceeded,
 } from '../actions/geolocation';
 
+import {
+	fromJS,
+} from 'immutable';
+
 export default function* geolocationSaga() {
 	yield takeEvery(GeolocationTypes.GET_LOCATIONS, getLocations);
 	yield takeEvery(GeolocationTypes.GET_LOCATION, getLocation);
 }
 
 function* getLocation(person) {
+	if(person == null){
+		return;
+	}
 	const queryParams = person.payload.get('ip_address').concat('?access_key=f623ac39bc733c8f237409b7f192dbf2');
 	const data
 		= yield call(fetch, 'http://api.ipstack.com/' + queryParams);
@@ -22,7 +29,7 @@ function* getLocation(person) {
 	if (data) {
 		const jsonData = yield data.json();
 		console.log('jsonData', jsonData);
-		yield put(fetchLocationSucceeded(jsonData));
+		yield put(fetchLocationSucceeded(fromJS(jsonData)));
 	}
 }
 

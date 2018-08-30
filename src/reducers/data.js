@@ -26,7 +26,7 @@ const processParsedCSV = (csv) => {
 const updateUsers = (state, metadata) => {
 	return state
 		.map(x => {
-			return x.get('ip_address') === metadata.ip
+			return x.get('ip_address') === metadata.get('ip')
 				? x.set('metadata', metadata)
 				: x
 		});
