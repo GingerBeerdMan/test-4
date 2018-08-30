@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import BarChart from '../components/BarChart';
 import Button from '@material-ui/core/Button';
+import { getData } from "../selectors/data";
 
 const styles = theme => ({
 	root: {
@@ -45,7 +46,7 @@ class DataVisualizer extends Component {
 
 	render() {
 		const {classes} = this.props;
-
+		// TODO: add more types of charts
 		return (
 			<div className={classes.wrapper}>
 				<Paper className={classes.root}>
@@ -89,7 +90,7 @@ class DataVisualizer extends Component {
 }
 
 const mapStateToProps = state => ({
-	dataFromStore: state.getIn(['data']),
+	dataFromStore: getData(state),
 });
 
 const mapDispatchToProps = dispatch => ({

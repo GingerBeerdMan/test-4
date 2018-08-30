@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { importCsv } from '../actions/importCSV';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {importCsv} from '../actions/importCSV';
 import DataLoader from './DataLoader';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
-import { getData } from "../selectors/data";
+import {Link} from 'react-router-dom';
+import {getData} from "../selectors/data";
 
 const styles = theme => ({
 	root: {
@@ -18,6 +18,9 @@ const styles = theme => ({
 	wrapper: {
 		maxWidth: '1000px',
 		margin: '100px auto 0'
+	},
+	marginBottom10: {
+		marginBottom: '10px'
 	}
 });
 
@@ -37,6 +40,7 @@ class Home extends Component {
 
 	render() {
 		const {classes} = this.props;
+		// TODO: add more visualization options
 		return (
 			<div className={classes.wrapper}>
 				<Paper className={classes.root}>
@@ -51,11 +55,20 @@ class Home extends Component {
 						(
 							<div>
 								<h4>Visualise the data:</h4>
-								<Link to="/bar-chart">
-									<Button color="primary" variant="contained">
-										Number of people, grouped by attribute and split by gender
-									</Button>
-								</Link>
+								<div className={classes.marginBottom10}>
+									<Link to="/bar-chart">
+										<Button color="primary" variant="contained">
+											Number of people, grouped by attribute and split by gender
+										</Button>
+									</Link>
+								</div>
+								<div>
+									<Link to="/geolocator">
+										<Button color="primary" variant="contained">
+											Geolocate a person
+										</Button>
+									</Link>
+								</div>
 							</div>
 						)
 					}
@@ -64,6 +77,7 @@ class Home extends Component {
 		)
 	}
 }
+
 const mapStateToProps = state => ({
 	dataFromStore: getData(state),
 });
