@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ChartistGraph from 'react-chartist';
-import Paper from '@material-ui/core/Paper';
 import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { Set } from 'immutable';
 import { Map } from 'immutable';
 
@@ -13,24 +11,18 @@ const styles = theme => ({
 		paddingTop: theme.spacing.unit * 2,
 		paddingBottom: theme.spacing.unit * 2,
 	},
-	wrapper: {
-		maxWidth: '1400px',
-		margin: '100px auto 0'
-	},
 	male: {
 		background: 'blue',
+	},
+	female: {
+		background: 'red',
+	},
+	legendBlock: {
 		width: '60px',
 		height: '19px',
 		color: 'white',
 		padding: '5px 10px',
-		textAlign: 'center'
-	},
-	female: {
-		background: 'red',
-		width: '60px',
-		height: '19px',
-		color: 'white',
-		padding: '5px 10px'
+		textAlign: 'center',
 	}
 });
 
@@ -61,7 +53,7 @@ class BarChart extends Component {
 			}, labelMap)
 			.toList();
 
-		const sortedData = labels
+		return labels
 			.toList()
 			.zip(maleSeries, femaleSeries)
 			.sortBy(x => {
@@ -69,14 +61,11 @@ class BarChart extends Component {
 			})
 			.slice(0, firstX - 1)
 			.toJS();
-
-		return sortedData;
 	}
 
 	render() {
 		const {classes} = this.props;
-		console.log('xxx', this.props.dataFromStore.toJS());
-		const sortedData = this.processData(this.props.dataFromStore, 'Car Make', 20);
+		const sortedData = this.processData(this.props.data, this.props.grouper, this.props.firstX);
 
 		const labels = sortedData.map(x => x[0]);
 		const maleSeries = sortedData.map(x => x[1]);
@@ -97,38 +86,22 @@ class BarChart extends Component {
 				}
 			}
 		};
-		const responsiveOptions = [
-			[]
-		];
 
 		return (
-			<div className={classes.wrapper}>
-				<Paper className={classes.root}>
-					<h3>Number of car owners, grouped by car make and split by gender</h3>
+			<div>
 					<div>
-						Legend:
-						<div className={classes.female}>Females</div>
-						<div className={classes.male}>Males</div>
+						<span className={classes.legendLabel}>Legend:</span>
+						<div className={[classes.female, classes.legendBlock].join(' ')}>Females</div>
+						<div className={[classes.male, classes.legendBlock].join(' ')}>Males</div>
 					</div>
 					<ChartistGraph data={data}
-												 responsiveOptions={responsiveOptions}
 												 options={options}
 												 type='Bar' />
-				</Paper>
 			</div>
 		)
 	}
-};
-
-const mapStateToProps = state => ({
-	dataFromStore: state.getIn(['data']),
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
+}
 
 export default compose(
 	withStyles(styles),
-	connect(mapStateToProps, mapDispatchToProps)
 )(BarChart);

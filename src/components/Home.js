@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { storeData } from '../actions';
+import { importCsv } from '../actions/importCSV';
 import DataLoader from './DataLoader';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
@@ -26,8 +26,7 @@ class Home extends Component {
 		this.state = {dataFromStore: null};
 	}
 
-	onFileLoaded(data, a) {
-		// console.log(data, a);
+	onFileLoaded(data) {
 		this.props.storeData(data);
 	}
 
@@ -53,7 +52,7 @@ class Home extends Component {
 								<h4>Visualise the data:</h4>
 								<Link to="/bar-chart">
 									<Button color="primary" variant="contained">
-										Number of car owners, grouped by car make and split by gender
+										Number of people, grouped by attribute and split by gender
 									</Button>
 								</Link>
 							</div>
@@ -69,7 +68,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	storeData: (data) => dispatch(storeData(data)),
+	storeData: (data) => dispatch(importCsv(data)),
 });
 
 export default compose(

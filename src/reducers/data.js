@@ -1,6 +1,10 @@
 import Immutable from 'immutable';
 import { Map } from 'immutable';
 
+import {
+	ImportCsvTypes,
+} from '../actions/importCSV';
+
 const initialState = Map({});
 
 const processParsedCSV = (csv) => {
@@ -17,8 +21,10 @@ const processParsedCSV = (csv) => {
 
 const dataReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'STORE_DATA':
+		case ImportCsvTypes.IMPORT_CSV_SUCCEEDED:
 			return processParsedCSV(Immutable.fromJS(action.payload));
+		case ImportCsvTypes.IMPORT_CSV_FAILED:
+			return state;
 		default:
 			return state;
 	}

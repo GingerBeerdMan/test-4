@@ -9,10 +9,13 @@ import { routerMiddleware, connectRouter } from 'connected-react-router/immutabl
 import { Provider } from 'react-redux';
 import Immutable from 'immutable';
 import rootReducer from './reducers';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas';
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const history = createBrowserHistory();
+const sagaMiddleware = createSagaMiddleware();
 
 const persistedState = localStorage.getItem('reduxState')
 	? Immutable.fromJS(JSON.parse(localStorage.getItem('reduxState')))
@@ -24,9 +27,12 @@ const store = createStore(
 	composeEnhancer(
 		applyMiddleware(
 			routerMiddleware(history),
+			sagaMiddleware
 		),
 	),
 );
+
+sagaMiddleware.run(rootSaga);
 
 store.subscribe(()=>{
 	localStorage.setItem('reduxState', JSON.stringify(store.getState().toJSON()))
