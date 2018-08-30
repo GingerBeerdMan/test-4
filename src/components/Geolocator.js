@@ -44,9 +44,10 @@ class DataVisualizer extends Component {
 	geolocateUser() {
 		return (event) => {
 			const user = this.findUser(event.target.value);
-			if (user && !user.get('metadata')) {
+            // TODO: find out why this breaks functionality
+            // if (user && !user.get('metadata')) {
 				this.props.geolocatePerson(user);
-			}
+			// }
 			this.setState({
 				user: this.findUser(event.target.value)
 			});
