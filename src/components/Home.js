@@ -7,6 +7,7 @@ import { importCsv } from '../actions/importCSV';
 import DataLoader from './DataLoader';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import { getData } from "../selectors/data";
 
 const styles = theme => ({
 	root: {
@@ -64,7 +65,7 @@ class Home extends Component {
 	}
 }
 const mapStateToProps = state => ({
-	dataFromStore: state.getIn(['data']),
+	dataFromStore: getData(state),
 });
 
 const mapDispatchToProps = dispatch => ({
